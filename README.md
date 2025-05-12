@@ -7,7 +7,7 @@ This is a backend project for my quotation app: [quotation frontend](https://git
 
 ---
 
-## 🧠 Sobre o Projeto
+## 🧠 About the project
 
 This project will have: 
 - A user CRUD  ✅
@@ -17,7 +17,7 @@ This project will have:
 
 ---
 
-## 🚀 Tecnologias
+## 🚀 Stacks
 
 This project are been developed with:
 
