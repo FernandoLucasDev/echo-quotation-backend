@@ -26,6 +26,6 @@ This project are been developed with:
 
 ---
 ```bash
-git clone https://github.com/seu-usuario/nomedoprojeto.git
+git clone [https://github.com/seu-usuario/nomedoprojeto.git](https://github.com/FernandoLucasDev/echo-quotation-backend.git)
 cd nomedoprojeto
 go run main.go
