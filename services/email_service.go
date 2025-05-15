@@ -1,36 +1,21 @@
 package services
 
 import (
-	"api-echo/controllers"
 	"fmt"
-	"math/rand"
 	"os"
-	"time"
 
 	"github.com/joho/godotenv"
 	gomail "gopkg.in/mail.v2"
 )
 
-func SendEmail(to string) error {
+func SendEmail(to string, body string) bool {
 
 	err := godotenv.Load(".env")
 	if err != nil {
 		fmt.Println("Error loading .env file")
 	}
 
-	rand.Seed(time.Now().UnixNano())
-	activation := fmt.Sprintf("%06d", rand.Intn(1000000))
-
-	ok := controllers.CreateActivationCode(to, activation)
-
-	var body string
-
 	subject := "Email via Gmail"
-
-	body = "Use the following code to authenticate: " + activation
-	if !ok {
-		body = "Code generation failed. Please try again later."
-	}
 
 	from := os.Getenv("EMAIL_FROM")
 	password:= os.Getenv("EMAIL_APP_PASSWORD")
@@ -46,11 +31,11 @@ func SendEmail(to string) error {
 
 	if err := dialer.DialAndSend(message); err != nil {
 		fmt.Println("Erro ao enviar o e-mail:", err)
-		return err
+		return false
 	}
 
 	fmt.Println("E-mail enviado com sucesso!")
 
-	return nil
+	return true
 
 }

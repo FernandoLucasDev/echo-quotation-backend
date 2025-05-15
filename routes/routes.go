@@ -9,6 +9,7 @@ import (
 
 func Init(e *echo.Echo) {
 
+	e.POST("/request-code", controllers.CreateActivationCode)
 	e.POST("/login", controllers.Login)
 
 	protected := e.Group("/users", middlewares.AuthMiddleware)
