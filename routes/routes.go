@@ -1,14 +1,22 @@
 package routes
 
 import (
-	"github.com/labstack/echo/v4"
 	"api-echo/controllers"
+	"api-echo/middlewares"
+
+	"github.com/labstack/echo/v4"
 )
 
 func Init(e *echo.Echo) {
-	e.GET("/users", controllers.GetUsers)
-	e.GET("/users/:id", controllers.GetUserByID)
-	e.POST("/users", controllers.CreateUser)
-	e.PUT("/users/:id", controllers.UpdateUser)
-	e.DELETE("/users/:id", controllers.DeleteUser)
+
+	e.POST("/request-code", controllers.CreateActivationCode)
+	e.POST("/login", controllers.Login)
+
+	protected := e.Group("/users", middlewares.AuthMiddleware)
+
+	protected.GET("", controllers.GetUsers)
+	protected.GET("/:id", controllers.GetUserByID)
+	protected.POST("", controllers.CreateUser)
+	protected.PUT("/:id", controllers.UpdateUser)
+	protected.DELETE("/:id", controllers.DeleteUser)
 }
