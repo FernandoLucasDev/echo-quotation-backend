@@ -45,7 +45,3 @@ func CreateActivationCode(c echo.Context) error {
 	})
 
 }
-
-func validateCode(email string, code string) {
-
-}
