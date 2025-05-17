@@ -14,7 +14,7 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 
 		if !ok || !auth {
 			return c.JSON(http.StatusUnauthorized, echo.Map{
-				"message": "Não autorizado",
+				"message": "Not authorized",
 			})
 		}
 
