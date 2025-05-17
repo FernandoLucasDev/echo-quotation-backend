@@ -43,20 +43,20 @@ func FetchAndStoreNews() {
 	for midia, url := range rssFeeds {
 		resp, err := http.Get(url)
 		if err != nil {
-			fmt.Println("Erro ao acessar:", url, err)
+			fmt.Println("Error access:", url, err)
 			continue
 		}
 		defer resp.Body.Close()
 
 		body, err := io.ReadAll(resp.Body)
 		if err != nil {
-			fmt.Println("Erro ao ler conteúdo de:", url, err)
+			fmt.Println("Error reading content of:", url, err)
 			continue
 		}
 
 		var rss RSS
 		if err := xml.Unmarshal(body, &rss); err != nil {
-			fmt.Println("Erro ao parsear XML:", err)
+			fmt.Println("Error in XML parse:", err)
 			continue
 		}
 
@@ -79,5 +79,5 @@ func FetchAndStoreNews() {
 	threshold := time.Now().AddDate(0, -1, 0)
 	db.DB.Where("created_at < ?", threshold).Delete(&models.News{})
 
-	fmt.Println("Job de notícias executado em", time.Now())
+	fmt.Println("Job called at:", time.Now())
 }

@@ -16,17 +16,18 @@ func main() {
 	c := cron.New()
 
 	db.Connect()
-	routes.Init(e)
-	e.Logger.Fatal(e.Start(":8080"))
 
-	_, err := c.AddFunc("0 8,14,20 * * *", func() {
-		log.Println("🔁 Executando job de notícias...")
+	_, err := c.AddFunc("*/5 * * * *", func() {
+		log.Println("🔁 Calling news job...")
 		services.FetchAndStoreNews()
 	})
 	if err != nil {
-		log.Fatal("Erro ao agendar o job:", err)
+		log.Fatal("Error scheduling Job:", err)
 	}
 
 	c.Start()
+
+	routes.Init(e)
+	e.Logger.Fatal(e.Start(":8080"))
 	
 }
