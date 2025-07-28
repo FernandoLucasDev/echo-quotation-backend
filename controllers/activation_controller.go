@@ -12,9 +12,20 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+type ActivationRequest struct {
+	Email string `json:"email"`
+}
+
 func CreateActivationCode(c echo.Context) error {
 
-	email := c.Param("email")
+	var req ActivationRequest
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"message": "Invalid request",
+		})
+	}
+
+	email := req.Email
 
 	rand.Seed(time.Now().UnixNano())
 	activationCode := fmt.Sprintf("%06d", rand.Intn(1000000))

@@ -28,7 +28,7 @@ func Login(c echo.Context) error {
 
 	if result := db.DB.Where("email = ?", loginReq.Email).First(&user); result.Error != nil {
 		return c.JSON(http.StatusUnauthorized, echo.Map{
-			"message": "Email ou código inválido",
+			"message": "no user found with this email",
 		})
 	}
 
@@ -44,7 +44,14 @@ func Login(c echo.Context) error {
 		})
 	}
 
-	sess, _ := session.Get("session", c)
+	sess, err := session.Get("session", c)
+	if err != nil || sess == nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{
+			"message": "Erro ao iniciar sessão",
+		})
+	}
+
+
 	sess.Values["authenticated"] = true
 	sess.Values["user_id"] = user.ID
 	sess.Values["email"] = user.Email

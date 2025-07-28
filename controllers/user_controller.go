@@ -16,11 +16,27 @@ func GetUsers(c echo.Context) error {
 func CreateUser(c echo.Context) error {
 	user := new(models.User)
 	if err := c.Bind(user); err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"message": "Entrada inválida",
+		})
 	}
-	db.DB.Create(user)
+
+	var existingUser models.User
+	if result := db.DB.Where("email = ?", user.Email).First(&existingUser); result.Error == nil {
+		return c.JSON(http.StatusConflict, echo.Map{
+			"message": "Email in user. Please login.",
+		})
+	}
+
+	if result := db.DB.Create(user); result.Error != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{
+			"message": "Error creating user",
+		})
+	}
+
 	return c.JSON(http.StatusCreated, user)
 }
+
 
 func GetUserByID(c echo.Context) error {
 	id := c.Param("id")
