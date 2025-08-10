@@ -35,5 +35,6 @@ func Connect() {
 	database.AutoMigrate(&models.Activation{})
 	database.AutoMigrate(&models.News{})
 	database.AutoMigrate(&models.Quotation{})
+	database.AutoMigrate(&models.QuotationHistory{})
 	DB = database
 }

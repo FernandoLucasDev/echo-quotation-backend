@@ -40,7 +40,7 @@ func main() {
 
 	e.Use(session.Middleware(store))
 
-	_, err = c.AddFunc("0 8,16,20 * * *", func() {
+	_, err = c.AddFunc("0 8,11,15,19,21 * * *", func() {
 		log.Println("🔁 Calling news job...")
 		services.FetchAndStoreNews()
 	})
@@ -51,12 +51,22 @@ func main() {
 	_, err = c.AddFunc("0 10,12,14,16,18,20 * * *", func() {
 		log.Println("🔁 Calling quotation job...")
 		services.FetchQuotation()
+		log.Printf("🔁 Finished quotation job at ... %s ...", time.Now().Format("2006-01-02 15:04:05"))
+	})
+	if err != nil {
+		log.Fatal("Error scheduling quotation job:", err)
+	}
+
+	_, err = c.AddFunc("0 18 * * *", func() {
+		log.Println("🔁 Calling quotation job...")
+		services.FetchQuotationToHistory()
+		log.Printf("🔁 Finished quotation job at ... %s ...", time.Now().Format("2006-01-02 15:04:05"))
 	})
 	if err != nil {
 		log.Fatal("Error scheduling quotation job:", err)
 	}
 	
-	c.Start()
+	c.Start()	
 
 	routes.Init(e)
 
