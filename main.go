@@ -22,7 +22,7 @@ func main() {
 
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Erro ao carregar o arquivo .env")
+		log.Fatal("❌ Erro ao carregar o arquivo .env")
 	}
 
 	e := echo.New()
@@ -45,7 +45,7 @@ func main() {
 		services.FetchAndStoreNews()
 	})
 	if err != nil {
-		log.Fatal("Error scheduling job:", err)
+		log.Fatal("❌ Error scheduling job:", err)
 	}
 
 	_, err = c.AddFunc("0 10,12,14,16,18,20 * * *", func() {
@@ -54,7 +54,7 @@ func main() {
 		log.Printf("🔁 Finished quotation job at ... %s ...", time.Now().Format("2006-01-02 15:04:05"))
 	})
 	if err != nil {
-		log.Fatal("Error scheduling quotation job:", err)
+		log.Fatal("❌ Error scheduling quotation job:", err)
 	}
 
 	_, err = c.AddFunc("0 18 * * *", func() {
@@ -63,7 +63,7 @@ func main() {
 		log.Printf("🔁 Finished quotation job at ... %s ...", time.Now().Format("2006-01-02 15:04:05"))
 	})
 	if err != nil {
-		log.Fatal("Error scheduling quotation job:", err)
+		log.Fatal("❌ Error scheduling quotation job:", err)
 	}
 	
 	c.Start()	
